@@ -9,7 +9,7 @@
         The digital encyclopedia created by Professor Oak is an invaluable tool to Trainers in the
         Pokémon world.
       </p>
-      <q-btn color="negative" label="Get started" unelevated rounded to="/search" class="q-mt-md" />
+      <q-btn color="negative" label="Get started" unelevated rounded to="/home" class="q-mt-md" />
     </div>
   </q-page>
 </template>
