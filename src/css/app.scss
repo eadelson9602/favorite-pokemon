@@ -71,16 +71,34 @@
   src: url(./fonts/Lato-BlackItalic.ttf);
 }
 
+body {
+  font-family: 'Lato', sans-serif;
+  color: #353535;
+}
+
 .title {
   font-size: 26px;
   font-weight: 700;
   line-height: 100%;
-  font-family: 'Lato', sans-serif;
+}
+
+.text-title {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 100%;
 }
 
 .text-body1 {
-  font-family: Lato;
   font-weight: 500;
   font-size: 18px;
   line-height: 150%;
+  color: #5e5e5e;
+}
+
+.text-body2 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 150%;
+  letter-spacing: 0%;
+  text-align: center;
 }

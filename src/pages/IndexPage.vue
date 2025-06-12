@@ -9,22 +9,9 @@
         The digital encyclopedia created by Professor Oak is an invaluable tool to Trainers in the
         Pokémon world.
       </p>
-      <LoadingComponent v-model="isLoading" />
-      <q-btn
-        color="negative"
-        label="Get started"
-        unelevated
-        rounded
-        @click="isLoading = true"
-        class="q-mt-md"
-      />
+      <q-btn color="negative" label="Get started" unelevated rounded to="/search" class="q-mt-md" />
     </div>
   </q-page>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { LoadingComponent } from '../components';
-
-const isLoading = ref<boolean>(false);
-</script>
+<script setup lang="ts"></script>

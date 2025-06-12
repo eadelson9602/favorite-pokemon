@@ -1,21 +1,17 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+  <div class="text-center q-pa-md flex flex-center">
     <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
+      <div class="text-title">Uh-oh!</div>
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
-      </div>
+      <div class="text-body2 q-mt-md">You look lost on your journey!</div>
 
       <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
+        class="q-mt-md"
+        color="negative"
+        rounded
         unelevated
-        to="/"
-        label="Go Home"
+        to="/home"
+        label="Go Back Home"
         no-caps
       />
     </div>
