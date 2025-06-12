@@ -2,7 +2,7 @@
   "name": "favorite-pokemon",
   "version": "0.0.1",
   "description": "Application to select a favorite pokemon",
-  "productName": "Application to select a favorite pokemon",
+  "productName": "Favorite Pokemon",
   "author": "Elver Rodriguez <adelson9602@gmail.com>",
   "type": "module",
   "private": true,
