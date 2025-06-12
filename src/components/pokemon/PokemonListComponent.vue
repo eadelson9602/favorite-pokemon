@@ -4,7 +4,7 @@
       <q-item
         @click="viewDetailPokemon(pokemon)"
         clickable
-        v-for="pokemon in pokemons"
+        v-for="pokemon in pokemonsList"
         :key="pokemon.name"
         class="pokemon-card cursor-pointer"
       >
@@ -33,6 +33,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
 
 import type { Pokemon } from '../../models/Pokemon.models';
 import type { PokemonService } from '../../services/pokemon.service';
@@ -45,11 +47,12 @@ import { controlError } from 'src/helpers';
 import { usePokemon } from 'src/composable/usePokemon';
 
 import { usePokemonStore } from 'src/stores/pokemons-store';
-import { storeToRefs } from 'pinia';
 
 interface PokemonListProps {
   pokemonService: PokemonService;
 }
+
+const route = useRoute();
 
 const pokemonStore = usePokemonStore();
 const { toggleFavorite, setPokemonSelected } = usePokemon();
@@ -59,6 +62,7 @@ const { pokemons } = storeToRefs(pokemonStore);
 const viewDetail = ref(false);
 const pokemonData = ref<DetailPokemon>();
 const loading = ref(true);
+const pokemonsList = ref<Pokemon[]>([]);
 
 const viewDetailPokemon = async (pokemon: Pokemon) => {
   loading.value = true;
@@ -83,10 +87,18 @@ const viewDetailPokemon = async (pokemon: Pokemon) => {
 onMounted(async () => {
   loading.value = true;
   try {
-    const response = await props.pokemonService.fetchPokemons();
-    pokemonStore.setPokemons(
-      response.results.map((pokemon) => ({ ...pokemon, isFavorite: false })),
-    );
+    console.log('route.name', route.path);
+    if (route.path === '/favorites') {
+      pokemonsList.value = pokemons.value.filter((pokemon) => pokemon.isFavorite);
+    } else {
+      if (pokemons.value.length === 0) {
+        const response = await props.pokemonService.fetchPokemons();
+        pokemonStore.setPokemons(
+          response.results.map((pokemon) => ({ ...pokemon, isFavorite: false })),
+        );
+      }
+      pokemonsList.value = pokemons.value;
+    }
   } catch (error) {
     controlError(error);
   } finally {

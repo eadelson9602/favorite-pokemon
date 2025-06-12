@@ -12,6 +12,11 @@ const routes: RouteRecordRaw[] = [
     children: [{ path: '', component: () => import('src/pages/HomePage.vue') }],
   },
   {
+    path: '/favorites',
+    component: () => import('layouts/AppLayout.vue'),
+    children: [{ path: '', component: () => import('src/pages/FavoritesPokemons.vue') }],
+  },
+  {
     path: '/not_found',
     component: () => import('layouts/AppLayout.vue'),
     children: [{ path: '', component: () => import('src/pages/ErrorNotFound.vue') }],
