@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <div class="row justify-center">
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-xs-12 col-sm-8 col-md-6">
         <PokemonListComponent :pokemonService="pokemonService" />
       </div>
     </div>

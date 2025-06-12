@@ -6,13 +6,21 @@
         clickable
         v-for="pokemon in pokemons"
         :key="pokemon.name"
-        class="pokemon-card"
+        class="pokemon-card cursor-pointer"
       >
         <q-item-section>
           <q-item-label>{{ pokemon.name }}</q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-btn icon="star" class="" unelevated size="sm" round />
+          <q-btn
+            icon="star"
+            class="star-btn"
+            @click.stop="toggleFavorite(pokemon)"
+            unelevated
+            size="sm"
+            round
+            :text-color="pokemon.isFavorite ? 'yellow' : 'grey'"
+          />
         </q-item-section>
       </q-item>
     </q-list>
@@ -34,6 +42,7 @@ import DetailPokemonComponent from './DetailPokemonComponent.vue';
 import LoadingComponent from '../loading/LoadingComponent.vue';
 
 import { controlError } from 'src/helpers';
+import { usePokemon } from 'src/composable/usePokemon';
 
 import { usePokemonStore } from 'src/stores/pokemons-store';
 import { storeToRefs } from 'pinia';
@@ -43,6 +52,7 @@ interface PokemonListProps {
 }
 
 const pokemonStore = usePokemonStore();
+const { toggleFavorite, setPokemonSelected } = usePokemon();
 
 const props = defineProps<PokemonListProps>();
 const { pokemons } = storeToRefs(pokemonStore);
@@ -51,10 +61,13 @@ const pokemonData = ref<DetailPokemon>();
 const loading = ref(true);
 
 const viewDetailPokemon = async (pokemon: Pokemon) => {
+  loading.value = true;
   try {
-    loading.value = true;
+    setPokemonSelected(pokemon);
+
     const response = await props.pokemonService.getPokemonByUrl(pokemon.url);
     pokemonData.value = response;
+
     setTimeout(() => {
       viewDetail.value = true;
     }, 2100);
@@ -71,7 +84,9 @@ onMounted(async () => {
   loading.value = true;
   try {
     const response = await props.pokemonService.fetchPokemons();
-    pokemonStore.setPokemons(response.results);
+    pokemonStore.setPokemons(
+      response.results.map((pokemon) => ({ ...pokemon, isFavorite: false })),
+    );
   } catch (error) {
     controlError(error);
   } finally {

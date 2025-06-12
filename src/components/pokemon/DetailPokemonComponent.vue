@@ -60,14 +60,25 @@
       </q-card-section>
       <q-card-actions align="between">
         <q-btn unelevated rounded color="negative" no-caps label="Share to my friends" />
-        <q-btn unelevated round color="grey-2" text-color="warning" no-caps icon="star" />
+        <q-btn
+          unelevated
+          round
+          color="grey-2"
+          :text-color="pokemonSelected.isFavorite ? 'yellow' : 'grey'"
+          no-caps
+          icon="star"
+          @click="toggleFavorite(pokemonSelected)"
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import type { DetailPokemon } from '../../models/Pokemon.models';
+import { usePokemon } from '../../composable/usePokemon';
+
+const { toggleFavorite, pokemonSelected } = usePokemon();
 
 const props = withDefaults(
   defineProps<{
@@ -96,5 +107,7 @@ watch(
     emit('update:modelValue', val);
   },
 );
+
+onMounted(() => {});
 </script>
 <style lang="scss"></style>

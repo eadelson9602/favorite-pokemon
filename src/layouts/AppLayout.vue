@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf" class="q-pt-lg">
     <q-toolbar>
       <div class="row full-width justify-center">
-        <q-form @submit="searchPokemon" class="col-xs-12 col-md-6">
+        <q-form @submit="searchPokemon" class="col-xs-12 col-sm-8 col-md-6">
           <q-input
             class="search-input"
             label-color="black"
@@ -28,7 +28,7 @@
 
     <q-footer class="bg-white text-white shadow-2 q-py-sm" v-if="route.path !== '/not_found'">
       <q-toolbar class="justify-center">
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-sm-8 col-md-6">
           <div class="row">
             <div class="col q-pr-sm">
               <q-btn
@@ -97,6 +97,7 @@ const searchPokemon = async () => {
     const pokemon = {
       ...response,
       url,
+      isFavorite: false,
     };
     pokemonStore.setPokemons([pokemon]);
   } catch (error) {

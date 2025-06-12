@@ -34,8 +34,8 @@ export class PokemonServiceMock implements PokemonService {
       next: '',
       previous: '',
       results: [
-        { name: 'bulbasaur', url: `https://pokeapi.co/api/v2/pokemon/1/` },
-        { name: 'ivysaur', url: `https://pokeapi.co/api/v2/pokemon/2/` },
+        { name: 'bulbasaur', url: `https://pokeapi.co/api/v2/pokemon/1/`, isFavorite: false },
+        { name: 'ivysaur', url: `https://pokeapi.co/api/v2/pokemon/2/`, isFavorite: false },
       ],
     });
   }
