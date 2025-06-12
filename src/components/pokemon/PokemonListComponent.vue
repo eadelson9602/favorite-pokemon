@@ -35,12 +35,17 @@ import LoadingComponent from '../loading/LoadingComponent.vue';
 
 import { controlError } from 'src/helpers';
 
+import { usePokemonStore } from 'src/stores/pokemons-store';
+import { storeToRefs } from 'pinia';
+
 interface PokemonListProps {
   pokemonService: PokemonService;
 }
 
+const pokemonStore = usePokemonStore();
+
 const props = defineProps<PokemonListProps>();
-const pokemons = ref<Pokemon[]>([]);
+const { pokemons } = storeToRefs(pokemonStore);
 const viewDetail = ref(false);
 const pokemonData = ref<DetailPokemon>();
 const loading = ref(true);
@@ -48,7 +53,7 @@ const loading = ref(true);
 const viewDetailPokemon = async (pokemon: Pokemon) => {
   try {
     loading.value = true;
-    const response = await props.pokemonService.getPokemonById(pokemon.url);
+    const response = await props.pokemonService.getPokemonByUrl(pokemon.url);
     pokemonData.value = response;
     setTimeout(() => {
       viewDetail.value = true;
@@ -63,15 +68,13 @@ const viewDetailPokemon = async (pokemon: Pokemon) => {
 };
 
 onMounted(async () => {
-  console.log('Setting loading to true');
   loading.value = true;
   try {
     const response = await props.pokemonService.fetchPokemons();
-    pokemons.value = response.results;
+    pokemonStore.setPokemons(response.results);
   } catch (error) {
     controlError(error);
   } finally {
-    console.log('Setting loading to false');
     loading.value = false;
   }
 });

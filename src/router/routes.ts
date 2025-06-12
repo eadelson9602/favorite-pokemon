@@ -11,6 +11,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/AppLayout.vue'),
     children: [{ path: '', component: () => import('src/pages/HomePage.vue') }],
   },
+  {
+    path: '/not_found',
+    component: () => import('layouts/AppLayout.vue'),
+    children: [{ path: '', component: () => import('src/pages/ErrorNotFound.vue') }],
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

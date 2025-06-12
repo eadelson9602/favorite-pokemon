@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf" class="q-pt-lg">
     <q-toolbar>
       <div class="row full-width justify-center">
-        <div class="col-xs-12 col-md-6">
+        <q-form @submit="searchPokemon" class="col-xs-12 col-md-6">
           <q-input
             class="search-input"
             label-color="black"
@@ -10,12 +10,13 @@
             borderless
             v-model="search"
             label="Search pokemon"
+            :rules="[(val) => !!val || 'Please enter a pokemon name']"
           >
             <template v-slot:prepend>
               <q-icon name="search" />
             </template>
           </q-input>
-        </div>
+        </q-form>
       </div>
     </q-toolbar>
 
@@ -23,7 +24,9 @@
       <router-view />
     </q-page-container>
 
-    <q-footer class="bg-white text-white shadow-2 q-py-sm">
+    <loading-component v-model="isLoading" />
+
+    <q-footer class="bg-white text-white shadow-2 q-py-sm" v-if="route.path !== '/not_found'">
       <q-toolbar class="justify-center">
         <div class="col-xs-12 col-md-6">
           <div class="row">
@@ -59,13 +62,56 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
-const search = ref('');
+import { PokemonServiceImpl } from 'src/services/pokemon.service';
+
+import { controlError } from 'src/helpers';
+import { AxiosError } from 'axios';
+
+import { LoadingComponent } from '../components';
+
+import { usePokemonStore } from 'src/stores/pokemons-store';
+
+const router = useRouter();
 const route = useRoute();
+const pokemonStore = usePokemonStore();
+
+const isLoading = ref(false);
+const search = ref('');
 
 const isActive = (path: string) => {
   return route.path === path;
+};
+
+const pokemonService = new PokemonServiceImpl();
+const searchPokemon = async () => {
+  isLoading.value = true;
+  try {
+    const response = await pokemonService.getPokemonByName(search.value);
+    const urlTemp = response.location_area_encounters.split('/');
+    urlTemp.pop();
+
+    const url = urlTemp.join('/');
+
+    const pokemon = {
+      ...response,
+      url,
+    };
+    pokemonStore.setPokemons([pokemon]);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 404) {
+        await router.push('/not_found');
+      } else {
+        controlError(error);
+      }
+    } else {
+      controlError(error);
+    }
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 <style scoped>
