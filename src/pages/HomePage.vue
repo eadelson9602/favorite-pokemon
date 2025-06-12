@@ -1,17 +1,16 @@
 <template>
   <q-page padding>
-    <q-input v-model="search" label="Search pokemon">
-      <template v-slot:prepend>
-        <q-icon name="search" />
-      </template>
-    </q-input>
-    <ErrorNotFound />
+    <div class="row justify-center">
+      <div class="col-xs-12 col-sm-6">
+        <PokemonListComponent :pokemonService="pokemonService" />
+      </div>
+    </div>
   </q-page>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import ErrorNotFound from './ErrorNotFound.vue';
+import { PokemonListComponent } from 'src/components';
+import { PokemonServiceImpl } from 'src/services/pokemon.service';
 
-const search = ref('');
+const pokemonService = new PokemonServiceImpl();
 </script>
-<style lang=""></style>
+<style scoped></style>
